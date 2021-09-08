@@ -1,0 +1,152 @@
+model: sell_in
+sell_in:
+  country: france
+#  column_historical_forecast: 'sales_forecast_volume_w-1'
+  column_historical_forecast: 'sales_forecast_volume_w-4'
+#  column_historical_forecast: 'forecast_volume_m-3'
+  evaluation_start: 201801  #
+  evaluation_end: 201852
+  features:
+    # Switch on/off features to train our XGBoost forecast model (& predict future volumes)
+    cpg_trade_channel_indicator: True
+    events: False
+    open_orders: True
+    open_orders_sum_to_date_to_predict: True
+    plant_cpg_indicators: True
+    promotion_uplift: True
+    promotion_plan: True             # raw promotion features (1/2)
+    promotion_cannibalization: True  # raw promotion features (2/2)
+    rebates: False
+    sales_customer_last_year_rolling: True
+    sales_customer_sku_last_year_rolling: True
+    sales_customer_sku_plant_last_year_rolling: True
+    sales_force_activity_kpis: False
+    seasonality: True
+    sell_out_volumes: False
+    sell_out_inventory: False
+    shipped_orders: True
+    shipped_orders_sum_to_date_to_predict: False
+    sku_characteristics: True
+    sku_segmentation: True           # Festival or promotion specific SKUs, or NPDs
+    weather: True
+  forecasting_horizons: [4]  # in weeks
+  granularity:
+    - lead_sku
+    - calendar_yearweek
+    - plant
+    - customer_planning_group
+  is_weekly_forecast: True
+  main_data_version: '201918'  # Folder naming convention = week of extract (all files that must be updated)
+  main_file_name: 'hfa_cleaned.csv'
+  train_model: True
+  trained_model_file:  # '20190411_0846_forecast_model.pkl' # To open a specific model, ow load latest model
+  train_start: 201601
+  train_end: 201801
+  use_light_regressor: False
+  granularity_evaluator:
+    level_1:
+      - lead_sku
+      - calendar_yearweek
+      - plant
+      - customer_planning_group
+    level_2:
+      - lead_sku
+      - calendar_yearweek
+      - customer_planning_group
+    level_3:
+      - lead_sku
+      - calendar_yearweek
+      - is_on_trade
+    level_4:
+      - lead_sku
+      - calendar_yearweek
+      - plant
+    level_5:
+      - lead_sku
+      - calendar_yearweek
+#    level_6:
+#      - calendar_yearweek
+#      - brand_name
+#    level_7:
+#      - calendar_yearweek
+#      - sub_brand_name
+#    level_8:
+#      - calendar_yearweek
+#      - sales_office
+  xgboost_parameters:
+    max_depth: 15
+    n_estimators: 70
+    learning_rate: 0.1
+    n_jobs: 12
+    verbosity: 2
+  lightgbm_parameters:
+    boosting_type: 'gbdt'
+    max_depth': 15
+    learning_rate: 0.1
+    n_estimators: 70
+    subsample_for_bin: 200000
+    application': 'regression'
+    n_jobs: 12
+    silent: False
+sell_out:
+  country: france
+  evaluation_start: 201807  #
+  evaluation_end: 201812
+  features:
+    cpg_trade_channel_indicator: True
+    consumer_unit_characteristics: True
+    events: True
+    sales_customer_last_year_rolling: True
+    sales_customer_brand_last_year_rolling: True
+    sales_customer_consumer_unit_last_year_rolling: True
+    sales_customer_store_last_year_rolling: True
+    sales_customer_store_consumer_unit_last_year_rolling: True
+    seasonality: True
+    store_location_statistics: True
+    weather: True
+  forecasting_horizons: [4]  # in months
+  granularity:
+    - ean
+    - calendar_yearmonth
+    - dcd_store_id
+    - customer
+  is_weekly_forecast: False
+  main_data_version: '201901'
+  main_file_name: 'sell_out_dts_clean.csv'
+  train_model: True
+  train_model_file:
+  train_start: 201701
+  train_end: 201804
+  use_light_regressor: False
+  granularity_evaluator:
+    level_1:
+      - ean
+      - calendar_yearmonth
+      - dcd_store_id
+      - customer
+    level_2:
+      - ean
+      - calendar_yearmonth
+      - dcd_store_id
+    level_3:
+      - ean
+      - calendar_yearmonth
+      - customer
+    level_4:
+      - ean
+      - calendar_yearmonth
+  xgboost_parameters:
+    max_depth: 25
+    n_estimators: 70
+    learning_rate: 0.1
+    n_jobs: 12
+    verbosity: 2
+  lightgbm_parameters:
+    boosting_type: 'gbdt'
+    max_depth': 25
+    learning_rate: 0.1
+    n_estimators: 70
+    subsample_for_bin: 200000
+    application': 'regression'
+    n_jobs: 12
+    silent: False

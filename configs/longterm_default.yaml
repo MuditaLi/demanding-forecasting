@@ -1,0 +1,17 @@
+model: sell_in
+sell_in:
+  #evaluation_start: 201801
+  #evaluation_end: 201812
+  is_weekly_forecast: False
+  forecasting_horizons: [48]  # in months
+  train_start: 201503
+  train_end: 201903
+  granularity:
+    - lead_sku
+    - calendar_yearmonth
+  main_file_name: 'fc_acc_week.csv'
+  train_model: True
+  granularity_evaluator:
+    level_1:
+      - lead_sku
+      - calendar_yearmonth

@@ -1,0 +1,54 @@
+model: sell_in
+file_name_model_configs: 'default_france.yaml'
+forecasting_horizons_trainer: # in weeks or months depending on is_weekly_forecast attribute of model
+  smallest_horizon: 1
+  largest_horizon: 52
+train_date_when_predicing_min: 201601
+train_date_to_predict_max: 201852
+sell_in:  # individual sell-in model config
+  column_historical_forecast:  # left blank on purpose since most model can't be compared with APO
+  evaluation_start:            # 201801 (left empty to train on all available data)
+  evaluation_end:              # 201852
+  train_model: True
+  train_start: 201601
+  train_end: 201852
+  granularity_evaluator:
+    level_1:
+      - lead_sku
+      - calendar_yearweek
+      - plant
+      - customer_planning_group
+    level_2:
+      - lead_sku
+      - calendar_yearweek
+      - customer_planning_group
+    level_4:
+      - lead_sku
+      - calendar_yearweek
+      - plant
+    level_5:
+      - lead_sku
+      - calendar_yearweek
+sell_out:
+  evaluation_start: 201807
+  evaluation_end: 201812
+  train_model: True
+  train_start: 201701
+  train_end: 201803
+  granularity_evaluator:
+    level_1:
+      - ean
+      - calendar_yearmonth
+      - dcd_store_id
+      - customer
+    level_2:
+      - ean
+      - calendar_yearmonth
+      - dcd_store_id
+    level_3:
+      - ean
+      - calendar_yearmonth
+      - customer
+    level_4:
+      - ean
+      - calendar_yearmonth

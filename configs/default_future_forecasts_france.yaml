@@ -1,0 +1,17 @@
+model: sell_in
+sell_in:
+  file_name_predictions_list: 'predictions_list.csv'  # 'fc_acc_week.csv'
+  file_name_configs_model: 'default_france.yaml'  # Single model configs
+  date_when_predicting: 201917
+  first_date_to_predict: 201918
+  last_date_to_predict: 201952
+  scenario_promo: True # False
+  scenario_weather:
+    use_existing_year_data:
+      - 2018
+      - 2017
+    degrees_celsius:
+      - -2
+      - -1
+      - +1
+      - +2
